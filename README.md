@@ -1,1 +1,0 @@
-# smanve.github.io
