@@ -12,7 +12,7 @@ const Projects: React.FC = () => {
       <h2 className="font-sfmono text-2xl">Work</h2>
       {showAlert && (
         <AlertBox
-          message="gh/username"
+          message="gh/smanve"
           buttonText="GitHub"
           buttonLink="#"
           onDismiss={dismissAlert}
