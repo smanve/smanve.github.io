@@ -9,7 +9,7 @@ const Projects: React.FC = () => {
 
   return (
     <>
-      <h2 className="font-sfmono text-2xl">Work</h2>
+      <h2 className="font-sfmono text-2xl">Links</h2>
       {showAlert && (
         <AlertBox
           message="gh/smanve"
@@ -20,17 +20,17 @@ const Projects: React.FC = () => {
       )}
       {showAlert && (
         <AlertBox
-          message="re/username"
-          buttonText="Replicate"
-          buttonLink="#"
+          message="rxresu.me"
+          buttonText="Resume"
+          buttonLink="https://rxresu.me/manvendrasingh1999/continuous-genuine-barracuda"
           onDismiss={dismissAlert}
         />
       )}
       {showAlert && (
         <AlertBox
-          message="li/username"
+          message="li/manvendra.singh"
           buttonText="LinkedIn"
-          buttonLink="#"
+          buttonLink="https://www.linkedin.com/in/manvendrasingh1999/"
           onDismiss={dismissAlert}
         />
       )}
