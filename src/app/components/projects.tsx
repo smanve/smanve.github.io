@@ -14,7 +14,7 @@ const Projects: React.FC = () => {
         <AlertBox
           message="gh/smanve"
           buttonText="GitHub"
-          buttonLink="#"
+          buttonLink="https://github.com/smanve"
           onDismiss={dismissAlert}
         />
       )}

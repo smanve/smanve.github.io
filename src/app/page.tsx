@@ -1,6 +1,7 @@
-import type {Metadata} from 'next'
+// import type {Metadata} from 'next'
 import Projects from './components/projects';
 import ParticlesBackground from './ParticlesBackground';
+import type { NextApiRequest, NextApiResponse } from "next/types";
 const Page = () => {
     return (<div className="flex flex-col gap-8 mx-4 my-16 md:mx-0">
         <ParticlesBackground/>
