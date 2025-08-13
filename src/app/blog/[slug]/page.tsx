@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
@@ -11,9 +12,8 @@ type Frontmatter = {
   summary?: string;
 };
 
-// Build each post at compile time
 export async function generateStaticParams() {
-  return getAllPosts().map(p => ({ slug: p.slug }));
+  return getAllPosts().map((p) => ({ slug: p.slug }));
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
@@ -22,42 +22,34 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   const source = fs.readFileSync(filePath, "utf-8");
 
-  // compileMDX turns the MDX string into a renderable React node (RSC-safe)
   const { content, frontmatter } = await compileMDX<Frontmatter>({
     source,
     options: {
-      parseFrontmatter: true, // reads the --- frontmatter ---
-      mdxOptions: {
-        remarkPlugins: [remarkGfm], // tables, strikethrough, etc.
-        rehypePlugins: [rehypeSlug], // adds ids to headings
-      },
-    },
-    components: {
-      // You can expose custom components to MDX here, e.g.:
-      // Code: (props: any) => <pre className="bg-zinc-900 text-white p-4 rounded" {...props} />
+      parseFrontmatter: true,
+      mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug] },
     },
   });
 
   return (
     <main className="mx-4 my-16 md:mx-0 space-y-6">
+      <nav className="text-sm">
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-1 underline text-primary/70 hover:text-primary"
+        >
+          ← Back to Blog
+        </Link>
+      </nav>
+
       <h1 className="text-3xl font-bold">{frontmatter.title ?? params.slug}</h1>
       {frontmatter.date && (
         <div className="opacity-60">{new Date(frontmatter.date).toDateString()}</div>
       )}
 
-      <article
-  className="
-    prose prose-slate max-w-none
-    prose-headings:text-zinc-900
-    prose-p:text-zinc-800 prose-li:text-zinc-800 prose-strong:text-zinc-900
-    prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-    prose-pre:bg-zinc-900 prose-pre:text-zinc-50 prose-pre:rounded-lg prose-pre:p-4
-    prose-code:text-zinc-800 prose-code:bg-zinc-100 prose-code:px-1.5 prose-code:py-0.5
-    prose-code:rounded-md prose-code:font-medium
-  "
->
-  {content}
-</article>
+      {/* Render the MDX body */}
+      <article className="prose prose-slate max-w-none prose-headings:text-zinc-900 prose-p:text-zinc-800 prose-li:text-zinc-800 prose-strong:text-zinc-900 prose-a:text-primary hover:prose-a:underline">
+        {content}
+      </article>
     </main>
   );
 }

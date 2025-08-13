@@ -1,4 +1,5 @@
 import './globals.css'
+import SiteHeader from "./components/SiteHeader";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className="max-w-screen-sm mx-auto selection:bg-primary selection:text-white font-sfmono">
+        <SiteHeader />
         <div>{children}</div>
       </body>
     </html>

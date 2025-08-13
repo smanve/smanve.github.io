@@ -1,10 +1,8 @@
 // next.config.js
-const withMDX = require('@next/mdx')();
-const nextConfig = withMDX({
+const withMDX = require('@next/mdx')(); // enables MDX
+
+module.exports = withMDX({
   pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
-  experimental: {
-    appDir: true,
-  },
-  reactStrictMode: true, 
+  reactStrictMode: true,
+  // no experimental.appDir needed on Next 14+
 });
-module.exports = nextConfig;

@@ -8,17 +8,6 @@ const Page = () => {
     <div className="flex flex-col gap-8 mx-4 my-16 md:mx-0">
       <ParticlesBackground/>
 
-      {/* simple header nav */}
-      <nav className="flex gap-4 text-sm">
-        <Link href="/blog" className="underline text-primary/70 hover:text-primary">
-          Blog
-        </Link>
-        <Link href="/projects" className="underline text-primary/70 hover:text-primary">
-          Projects
-        </Link>
-        {/* add more later: About, Contact, etc. */}
-      </nav>
-
       <div className="flex flex-col-reverse gap-8 md:flex-row">
         <div className="flex flex-col gap-4">
           <h1 className="text-3xl font-bold">
