@@ -45,9 +45,19 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         <div className="opacity-60">{new Date(frontmatter.date).toDateString()}</div>
       )}
 
-      <article className="prose prose-zinc dark:prose-invert max-w-none">
-        {content}
-      </article>
+      <article
+  className="
+    prose prose-slate max-w-none
+    prose-headings:text-zinc-900
+    prose-p:text-zinc-800 prose-li:text-zinc-800 prose-strong:text-zinc-900
+    prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+    prose-pre:bg-zinc-900 prose-pre:text-zinc-50 prose-pre:rounded-lg prose-pre:p-4
+    prose-code:text-zinc-800 prose-code:bg-zinc-100 prose-code:px-1.5 prose-code:py-0.5
+    prose-code:rounded-md prose-code:font-medium
+  "
+>
+  {content}
+</article>
     </main>
   );
 }

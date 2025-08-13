@@ -1,0 +1,70 @@
+---
+title: "Administer Active Directory Domain Services — Guided Project"
+summary: "Promoted a server to a DC, designed OUs, automated user/group setup, enforced password policies, and applied security baselines with GPO — focusing on what actually breaks and how to fix it."
+date: "2025-08-13"
+tags: ["Windows Server", "AD DS", "GPO", "Security", "PowerShell"]
+hero: "/projects/ad-ds-guided.png"
+---
+
+## Overview
+2-hour guided lab where I stood up **AD DS** for `corp.local`, then hardened and operationalised it. I kept it practical: **what needs doing, why it matters, and the sharp edges** I hit.
+
+## What I built
+- **DC01** (Windows Server) promoted to **Domain Controller** for `corp.local`
+- Base **OU structure** (`Corp Users`, `Workstations`)
+- **Users / groups** (with a simple role-based pattern)
+- **Password policy** (default) + **fine-grained** policy for admins
+- **Baseline GPOs** for DCs and workstations
+
+## Core tasks 
+```powershell
+# Promote to DC
+Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
+Install-ADDSForest -DomainName "corp.local" -DomainNetbiosName "CORP" -Force
+
+# OU + user + group
+New-ADOrganizationalUnit -Name "Corp Users" -Path "DC=corp,DC=local"
+New-ADUser -Name "Emily Chen" -SamAccountName echen -UserPrincipalName echen@corp.local -Path "OU=Corp Users,DC=corp,DC=local" -Enabled $true
+New-ADGroup -Name "Helpdesk" -GroupScope Global -GroupCategory Security
+Add-ADGroupMember -Identity "Helpdesk" -Members echen
+
+# Password policies
+Set-ADDefaultDomainPasswordPolicy -Identity "corp.local" -MinPasswordLength 12 -ComplexityEnabled $true -LockoutThreshold 5
+New-ADFineGrainedPasswordPolicy -Name "AdminsPolicy" -Precedence 1 -MinPasswordLength 16 -MaxPasswordAge (New-TimeSpan -Days 30)
+Add-ADFineGrainedPasswordPolicySubject -Identity "AdminsPolicy" -Subjects "Domain Admins"
+
+# Baseline GPO (example)
+$dcGpo = New-GPO -Name "Baseline - Domain Controllers"
+New-GPLink -Name $dcGpo.DisplayName -Target "OU=Domain Controllers,DC=corp,DC=local"
+
+## Gotchas & fixes (the real lessons)
+
+- **DNS/time are table stakes.** Kerberos fails fast if the DC isn’t its own DNS or time drifts.  
+  **Fix:** `Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 127.0.0.1` and `w32tm /config /reliable:yes /update`.
+- **OU design before GPO.** Link policies to OUs you control; avoid dumping everything at the domain root.
+- **Password policy precedence.** Default domain policy applies to everyone; fine-grained overrides only for explicit subjects.
+- **Verify, don’t assume.** Use `gpresult /r`, `Get-ADDefaultDomainPasswordPolicy`, `Get-ADDomain`, and check `SYSVOL` / `NETLOGON` shares.
+- **Automate early.** PowerShell makes user/group ops idempotent; store CSVs for bulk adds.
+- **Least privilege via groups.** Use **AGDLP** patterns to map roles → access cleanly.
+
+## Quick validation
+
+Get-ADDomain; Get-ADForest
+Get-ADDefaultDomainPasswordPolicy | Format-List *
+gpresult /r   # run from a joined workstation
+whoami /all   # confirm group membership + Kerberos
+
+## What I took away
+
+- Reliability comes from **clean DNS + time + a sane OU strategy**.
+- **GPO + security baselines** are the levers—test in a lab, then link narrowly.
+- **Fine-grained policies** are for exceptions, not the default.
+- **Scripts > clicks.** Reproducible beats “works on my box.”
+
+## Next
+
+- Add a **second DC** for redundancy.
+- Configure **System State backups**.
+- Document a **restore runbook** and test it.
+
+

@@ -12,7 +12,7 @@ export default function BlogIndex() {
   return (
     <main className="mx-4 my-16 md:mx-0 space-y-6">
       <h1 className="text-3xl font-bold">Blog</h1>
-      <p className="text-gray-600">Fresh thoughts, learnings, and write-ups.</p>
+      <p className="text-gray-600">Fresh thoughts, learnings, and musings.</p>
 
       <ul className="space-y-4">
         {posts.map(p => (
