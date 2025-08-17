@@ -1,70 +1,70 @@
 ---
-title: "Administer Active Directory Domain Services — Guided Project"
-summary: "Promoted a server to a DC, designed OUs, automated user/group setup, enforced password policies, and applied security baselines with GPO, here I'm focusing on what actually breaks and how to fix it."
+title: "Setting Up Active Directory for Beginners"
+summary: "I recently did a short 2-hour guided lab where I set up Active Directory Domain Services on a Windows Server. Instead of going deep into theory, I'll focused on what I actually had to do and the little problems that popped up along the way."
 date: "2025-08-13"
 tags: ["Windows Server", "AD DS", "GPO", "Security", "PowerShell"]
 hero: "/projects/ad-ds-guided.png"
 ---
 
-## Overview
-2-hour guided lab where I stood up **AD DS** for `corp.local`, then hardened and operationalised it. I kept it practical: **what needs doing, why it matters, and the sharp edges** I hit.
-
 ## What I built
-- **DC01** (Windows Server) promoted to **Domain Controller** for `corp.local`
-- Base **OU structure** (`Corp Users`, `Workstations`)
-- **Users / groups** (with a simple role-based pattern)
-- **Password policy** (default) + **fine-grained** policy for admins
-- **Baseline GPOs** for DCs and workstations
 
-## Core tasks 
-```powershell
-# Promote to DC
-Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
-Install-ADDSForest -DomainName "corp.local" -DomainNetbiosName "CORP" -Force
+* A Windows Server promoted to a **Domain Controller** for `corp.local` (think: the “boss” of the network)
+* A basic **OU (Organizational Unit) structure** to keep things tidy (`Corp Users`, `Workstations`)
+* A couple of **users and groups**, with a role-based pattern (e.g. Helpdesk group)
+* **Password policies** – one for everyone, and a stricter one for admins
+* Some **baseline Group Policies** to lock things down
 
-# OU + user + group
-New-ADOrganizationalUnit -Name "Corp Users" -Path "DC=corp,DC=local"
-New-ADUser -Name "Emily Chen" -SamAccountName echen -UserPrincipalName echen@corp.local -Path "OU=Corp Users,DC=corp,DC=local" -Enabled $true
-New-ADGroup -Name "Helpdesk" -GroupScope Global -GroupCategory Security
-Add-ADGroupMember -Identity "Helpdesk" -Members echen
+---
 
-# Password policies
-Set-ADDefaultDomainPasswordPolicy -Identity "corp.local" -MinPasswordLength 12 -ComplexityEnabled $true -LockoutThreshold 5
-New-ADFineGrainedPasswordPolicy -Name "AdminsPolicy" -Precedence 1 -MinPasswordLength 16 -MaxPasswordAge (New-TimeSpan -Days 30)
-Add-ADFineGrainedPasswordPolicySubject -Identity "AdminsPolicy" -Subjects "Domain Admins"
+## Core steps (in plain English)
 
-# Baseline GPO (example)
-$dcGpo = New-GPO -Name "Baseline - Domain Controllers"
-New-GPLink -Name $dcGpo.DisplayName -Target "OU=Domain Controllers,DC=corp,DC=local"
+1. **Made the server a Domain Controller** – so it could run AD DS.
+2. **Created OUs** – folders where you keep users/computers for easier management.
+3. **Added users & groups** – e.g. created Emily Chen, then put her into the Helpdesk group.
+4. **Set password rules** – 12+ characters for normal users, 16+ for admins.
+5. **Applied baseline security policies** – through Group Policy Objects (GPOs).
 
-## Gotchas & fixes (the real lessons)
+---
 
-- **DNS/time are table stakes.** Kerberos fails fast if the DC isn’t its own DNS or time drifts.  
-  **Fix:** `Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 127.0.0.1` and `w32tm /config /reliable:yes /update`.
-- **OU design before GPO.** Link policies to OUs you control; avoid dumping everything at the domain root.
-- **Password policy precedence.** Default domain policy applies to everyone; fine-grained overrides only for explicit subjects.
-- **Verify, don’t assume.** Use `gpresult /r`, `Get-ADDefaultDomainPasswordPolicy`, `Get-ADDomain`, and check `SYSVOL` / `NETLOGON` shares.
-- **Automate early.** PowerShell makes user/group ops idempotent; store CSVs for bulk adds.
-- **Least privilege via groups.** Use **AGDLP** patterns to map roles → access cleanly.
+## The real lessons (things that went wrong)
 
-## Quick validation
+* **DNS & time are everything.** If your Domain Controller isn’t using itself as DNS or the time drifts, **Kerberos breaks** and logins fail.
 
-Get-ADDomain; Get-ADForest
-Get-ADDefaultDomainPasswordPolicy | Format-List *
-gpresult /r   # run from a joined workstation
-whoami /all   # confirm group membership + Kerberos
+  * Fix: point DNS to `127.0.0.1` and make the DC a reliable time source.
 
-## What I took away
+* **Think about OUs first.** Don’t dump policies at the domain root. Put computers/users into OUs and link GPOs there.
 
-- Reliability comes from **clean DNS + time + a sane OU strategy**.
-- **GPO + security baselines** are the levers—test in a lab, then link narrowly.
-- **Fine-grained policies** are for exceptions, not the default.
-- **Scripts > clicks.** Reproducible beats “works on my box.”
+* **Password rules aren’t always obvious.** The “Default Domain Policy” applies to everyone, but fine-grained policies only kick in for the groups you explicitly target.
 
-## Next
+* **Don’t assume policies applied.** Always check with tools like `gpresult /r` or `whoami /all` to confirm.
 
-- Add a **second DC** for redundancy.
-- Configure **System State backups**.
-- Document a **restore runbook** and test it.
+* **Automate early.** PowerShell makes life easier when adding multiple users/groups – way faster than clicking.
 
+* **Use groups properly.** Instead of giving people permissions directly, add them to groups and assign access at the group level. Cleaner, safer, easier to audit.
 
+---
+
+## Quick checks I ran
+
+* `Get-ADDomain; Get-ADForest` – make sure the domain is alive.
+* `gpresult /r` – confirm which policies apply to a workstation.
+* `whoami /all` – see what groups/privileges a logged-in user has.
+
+---
+
+## What I learned
+
+* A reliable AD setup starts with **good DNS, correct time, and a sensible OU design**.
+* **Group Policies are powerful** but can also cause chaos – test them in a lab first.
+* Fine-grained password policies are best used for special cases (like admins), not everyone.
+* **Scripts > clicking around.** Automation makes your setup reproducible.
+
+---
+
+## What’s next
+
+* Add a second Domain Controller for backup.
+* Set up **System State backups**.
+* Write and test a **restore runbook** (so I know how to recover if things break).
+
+---
