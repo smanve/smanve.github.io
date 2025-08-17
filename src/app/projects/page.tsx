@@ -3,7 +3,7 @@ import Image from "next/image";
 import { getAllProjects } from "@/lib/projects";
 
 export const metadata = {
-  title: "Projects — Manvendra Singh",
+  title: "Projects - @smanve",
   description: "Things I’ve built, broken, and learned from.",
 };
 

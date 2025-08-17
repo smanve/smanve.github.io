@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
 
 export const metadata = {
-  title: "Blog — Manvendra Singh",
+  title: "Blog - @smanve",
   description: "Notes on projects, infra, and security.",
 };
 
