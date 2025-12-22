@@ -1,7 +1,93 @@
 ---
-title: "Hello World"
-date: "2025-08-13"
-summary: "My first post on this site."
+title: "What I’ve Been Learning During My Internship at Diagno Energy"
+date: "2025-12-23"
+summary: "A few practical lessons I’ve picked up while shipping real features"
 ---
 
-This is my first MDX post. HELLO WORLD
+I’ve been interning at **Diagno Energy**, and it’s been one of those experiences where you learn *a lot* simply because the work is real: real users, real edge cases, and real expectations around quality.
+
+This post is a reflection on what I’ve been learning (keeping it high-level and confidential).
+
+## 1) Shipping beats “perfect”
+At uni and in personal projects, it’s easy to keep polishing forever. In a team setting, you learn to make progress in a way that’s:
+
+- **Incremental** (small changes that are easy to review)
+- **Testable** (clear before/after behaviour)
+- **Reversible** (safe changes, minimal blast radius)
+
+That mindset shift alone has made me a better engineer.
+
+## 2) Data-heavy UI is a different beast
+A big part of my work has involved building/working on UI that depends on data. A few things that clicked for me:
+
+- The UI is only as good as the **shape of the data** you request.
+- “Just fetch everything” is usually the start of performance problems.
+- The best UX is often **fast + predictable**, not flashy.
+
+## 3) Performance is mostly about being intentional
+I used to think performance work was only about optimising code. In practice, it’s often about *design choices*:
+
+- Don’t render what the user can’t see yet.
+- Don’t fetch what the UI doesn’t need yet.
+- Keep heavy components off the critical path.
+
+A pattern that’s been useful is lazy-loading secondary UI:
+
+```tsx
+import React from "react";
+
+const DetailsPanel = React.lazy(() => import("./DetailsPanel"));
+
+export function Page() {
+  return (
+    <React.Suspense fallback={<div>Loading…</div>}>
+      <DetailsPanel />
+    </React.Suspense>
+  );
+}
+````
+
+It’s simple, but it can make a page feel instantly more responsive.
+
+## 4) “Good enough” queries don’t scale
+
+I’ve learned to respect the difference between:
+
+* **A query that works**
+* **A query that works efficiently for the next 6 months**
+
+Reducing payload size, avoiding over-fetching, and thinking about “what do we *actually* display?” makes a noticeable difference (especially when a UI is map-driven or has side panels / drill-down views).
+
+## 5) Clean communication is a technical skill
+
+The best engineers I’ve worked with communicate clearly:
+
+* They write PR descriptions that explain *why*, not just *what*.
+* They ask good questions early (before going down the wrong path).
+* They document decisions so the next person isn’t guessing.
+
+I’ve been trying to copy that: write small updates, be transparent when I’m unsure, and leave a trail that helps future me (and the team).
+
+## 6) You learn faster when you treat feedback as the job
+
+Code reviews have been one of the highest signal learning tools for me. The goal isn’t to “get it approved” - it’s to understand:
+
+* Why a certain approach is preferred
+* What patterns the codebase is optimised for
+* What risks I might not be seeing yet (edge cases, maintainability, consistency)
+
+## What I’m taking forward
+
+If I had to summarise my biggest takeaways so far:
+
+* **Start small, ship safely, iterate**
+* **Performance is a product feature**
+* **Request less data, shape it better**
+* **Write code for teammates, not just compilers**
+* **Feedback loops are where growth happens**
+
+I’m really grateful for the chance to learn in a real environment where quality matters and where I can see the impact of small engineering decisions.
+
+If you’re also early in your career: don’t wait until you “feel ready” - you get ready by doing.
+
+---
