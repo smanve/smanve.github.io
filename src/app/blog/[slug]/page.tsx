@@ -16,7 +16,11 @@ export async function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const filePath = getPostFile(params.slug);
   if (!fs.existsSync(filePath)) return notFound();
 
@@ -31,23 +35,25 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   });
 
   return (
-    <main className="mx-4 my-16 md:mx-0 space-y-6">
+    <main className="space-y-6">
       <nav className="text-sm">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-1 underline text-primary/70 hover:text-primary"
+          className="inline-flex items-center gap-1 text-[color:var(--muted)] hover:text-[color:var(--text)]"
         >
           ← Back to Blog
         </Link>
       </nav>
 
       <h1 className="text-3xl font-bold">{frontmatter.title ?? params.slug}</h1>
+
       {frontmatter.date && (
-        <div className="opacity-60">{new Date(frontmatter.date).toDateString()}</div>
+        <div className="text-sm text-[color:var(--muted)]">
+          {new Date(frontmatter.date).toDateString()}
+        </div>
       )}
 
-      {/* Render the MDX body */}
-      <article className="prose prose-slate max-w-none prose-headings:text-zinc-900 prose-p:text-zinc-800 prose-li:text-zinc-800 prose-strong:text-zinc-900 prose-a:text-primary hover:prose-a:underline">
+      <article className="prose max-w-none prose-a:text-[color:var(--accent)] hover:prose-a:underline">
         {content}
       </article>
     </main>

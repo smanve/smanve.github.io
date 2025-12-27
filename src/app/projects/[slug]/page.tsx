@@ -21,7 +21,11 @@ export async function generateStaticParams() {
   return getAllProjects().map((p) => ({ slug: p.slug }));
 }
 
-export default async function ProjectDetail({ params }: { params: { slug: string } }) {
+export default async function ProjectDetail({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const file = getProjectFile(params.slug);
   if (!fs.existsSync(file)) return notFound();
 
@@ -35,11 +39,11 @@ export default async function ProjectDetail({ params }: { params: { slug: string
   });
 
   return (
-    <main className="mx-4 my-16 md:mx-0 space-y-6">
+    <main className="space-y-6">
       <nav className="text-sm">
         <Link
           href="/projects"
-          className="inline-flex items-center gap-1 underline text-primary/70 hover:text-primary"
+          className="inline-flex items-center gap-1 text-[color:var(--muted)] hover:text-[color:var(--text)]"
         >
           ← Back to Projects
         </Link>
@@ -51,10 +55,7 @@ export default async function ProjectDetail({ params }: { params: { slug: string
       {frontmatter.tags?.length ? (
         <div className="flex flex-wrap gap-2">
           {frontmatter.tags.map((t) => (
-            <span
-              key={t}
-              className="px-2 py-0.5 text-xs rounded bg-primary/10 text-primary"
-            >
+            <span key={t} className="ui-badge text-xs">
               {t}
             </span>
           ))}
@@ -63,25 +64,30 @@ export default async function ProjectDetail({ params }: { params: { slug: string
 
       {/* hero image */}
       {frontmatter.hero ? (
-        <div className="relative w-full h-64 rounded-lg overflow-hidden">
-          <Image src={frontmatter.hero} alt={frontmatter.title ?? ""} fill className="object-cover" />
+        <div className="relative h-64 w-full overflow-hidden rounded-lg border border-[color:var(--border)]">
+          <Image
+            src={frontmatter.hero}
+            alt={frontmatter.title ?? ""}
+            fill
+            className="object-cover"
+          />
         </div>
       ) : null}
 
-      {/* Render the MDX body */}
-      <article className="prose prose-slate max-w-none prose-headings:text-zinc-900 prose-p:text-zinc-800 prose-li:text-zinc-800 prose-strong:text-zinc-900 prose-a:text-primary hover:prose-a:underline">
+      {/* MDX body (✅ readable in dark mode) */}
+      <article className="prose max-w-none prose-a:text-[color:var(--accent)] hover:prose-a:underline">
         {content}
       </article>
 
       {/* links */}
-      <div className="flex gap-4">
+      <div className="flex gap-4 text-sm">
         {frontmatter.repo && (
-          <a className="underline" href={frontmatter.repo} target="_blank" rel="noreferrer">
+          <a className="ui-link" href={frontmatter.repo} target="_blank" rel="noreferrer">
             GitHub
           </a>
         )}
         {frontmatter.demo && (
-          <a className="underline" href={frontmatter.demo} target="_blank" rel="noreferrer">
+          <a className="ui-link" href={frontmatter.demo} target="_blank" rel="noreferrer">
             Live
           </a>
         )}

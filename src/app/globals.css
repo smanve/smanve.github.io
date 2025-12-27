@@ -3,55 +3,174 @@
 @tailwind utilities;
 
 html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 html::-webkit-scrollbar {
-    width: 0px;
+  width: 0px;
+}
+
+/* -------------------------------
+   ChatGPT-ish minimal theme tokens
+   ------------------------------- */
+:root {
+  /* Surfaces */
+  --bg: #f7f7f8;        /* page background */
+  --surface: #ffffff;   /* cards / panels */
+  --surface-2: #f3f4f6; /* subtle hover / alt surface */
+
+  /* Ink */
+  --text: #0f172a;
+  --muted: #64748b;
+
+  /* UI */
+  --border: rgba(15, 23, 42, 0.10);
+  --ring: rgba(16, 163, 127, 0.25);
+  --accent: #10a37f;
+
+  --radius: 14px;
+}
+
+/* Dark mode via system preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f10;
+    --surface: #171717;
+    --surface-2: #1f1f1f;
+
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+
+    --border: rgba(229, 231, 235, 0.10);
+    --ring: rgba(16, 163, 127, 0.30);
+  }
+}
+
+/* Optional manual override if you add className="dark" to <html> */
+.dark {
+  --bg: #0f0f10;
+  --surface: #171717;
+  --surface-2: #1f1f1f;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: rgba(229, 231, 235, 0.10);
+  --ring: rgba(16, 163, 127, 0.30);
 }
 
 body {
-    background-color: #faf0e6;
+  background-color: var(--bg);
+  color: var(--text);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
 }
 
+/* Minimal but accessible focus */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
 
+/* -------------------------------
+   Fonts
+   ------------------------------- */
 @font-face {
-    font-family: 'SF Mono';
-    src: url('/assets/fonts/SFMono-Regular.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "SF Mono";
+  src: url("/assets/fonts/SFMono-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 @font-face {
-    font-family: 'SF Mono';
-    src: url('/assets/fonts/SFMono-Bold.otf') format('opentype');
-    font-weight: bold;
-    font-style: normal;
+  font-family: "SF Mono";
+  src: url("/assets/fonts/SFMono-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
 }
 
 .font-sfmono {
-    font-family: 'SF Mono', monospace;
+  font-family: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 }
+
+/* Your old .font-sfmonobold was invalid (font-family can't be "bold") */
 .font-sfmonobold {
-    font-family: 'SF Mono', bold;
+  font-family: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-weight: 700;
 }
 
-:root {
-
-  --surface: #f7efe6; /* ← tweak to match your beige */
+/* -------------------------------
+   Tiny UI helpers (optional)
+   ------------------------------- */
+.ui-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.ui-card:hover {
+  background: color-mix(in oklab, var(--surface), var(--surface-2) 35%);
 }
 
-
-.dark {
-  --surface: #0f1115;
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--surface), var(--surface-2) 40%);
+  color: var(--muted);
 }
 
+.ui-link {
+  color: color-mix(in oklab, var(--accent), var(--text) 12%);
+  text-underline-offset: 4px;
+}
+.ui-link:hover {
+  text-decoration: underline;
+}
 
+/* -------------------------------
+   Prose / code styling
+   ------------------------------- */
+
+/* ✅ Fix low contrast prose text (Tailwind Typography) */
+.prose {
+  color: var(--text);
+
+  --tw-prose-body: var(--text);
+  --tw-prose-headings: var(--text);
+  --tw-prose-lead: var(--text);
+  --tw-prose-links: color-mix(in oklab, var(--accent), var(--text) 12%);
+  --tw-prose-bold: var(--text);
+
+  --tw-prose-counters: var(--muted);
+  --tw-prose-bullets: var(--muted);
+  --tw-prose-captions: var(--muted);
+
+  --tw-prose-hr: var(--border);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+
+  --tw-prose-quotes: var(--text);
+  --tw-prose-code: var(--text);
+}
+
+.prose a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Inline code chips (ChatGPT-ish: subtle border, quiet bg) */
 .prose :not(pre) > code {
-  background-color: color-mix(in oklab, var(--surface), #3f2901 12%); /* ~12% darker than bg */
-  color: #1f2937;                 /* readable text on the darker chip */
-  padding: 0.125rem 0.375rem;     /* px-1.5 py-0.5 */
-  border-radius: 0.375rem;        /* rounded-md */
+  background-color: color-mix(in oklab, var(--surface), var(--text) 7%);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.375rem;
   font-weight: 500;
 }
 
@@ -61,11 +180,12 @@ body {
   content: none !important;
 }
 
-
+/* Code blocks */
 .prose pre {
-  background: #0b0b0b;
-  color: #fafafa;
-  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--surface), var(--text) 9%);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 0.75rem;
   padding: 1rem;
   overflow-x: auto;
 }
@@ -75,4 +195,10 @@ body {
   color: inherit;
 }
 
-
+/* Force code-ish elements to use the same font as the rest of the site */
+code,
+pre,
+kbd,
+samp {
+  font-family: inherit;
+}

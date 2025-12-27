@@ -10,20 +10,26 @@ export default function BlogIndex() {
   const posts = getAllPosts();
 
   return (
-    <main className="mx-4 my-16 md:mx-0 space-y-6">
+    <main className="space-y-6">
       <h1 className="text-3xl font-bold">Blog</h1>
-      <p className="text-gray-600">Fresh thoughts, learnings, and musings.</p>
+      <p className="text-[color:var(--muted)]">
+        Fresh thoughts, learnings, and musings.
+      </p>
 
       <ul className="space-y-4">
-        {posts.map(p => (
-          <li key={p.slug} className="p-4 rounded-lg border hover:shadow">
-            <Link href={`/blog/${p.slug}`} className="font-semibold underline">
+        {posts.map((p) => (
+          <li key={p.slug} className="ui-card p-4 transition-colors">
+            <Link href={`/blog/${p.slug}`} className="ui-link font-semibold">
               {p.title}
             </Link>
-            <div className="text-sm opacity-70">
+
+            <div className="mt-1 text-sm text-[color:var(--muted)]">
               {p.date ? new Date(p.date).toDateString() : ""}
             </div>
-            {p.summary && <p className="opacity-80">{p.summary}</p>}
+
+            {p.summary && (
+              <p className="mt-2 text-[color:var(--muted)]">{p.summary}</p>
+            )}
           </li>
         ))}
       </ul>
