@@ -48,7 +48,7 @@ export default function ThemeToggle() {
   return (
     <button
       type="button"
-      className="ui-icon-button"
+      className={["ui-theme-toggle", theme === "dark" ? "is-dark" : "is-light"].join(" ")}
       aria-label={
         mounted ? `Switch to ${nextTheme} mode` : "Toggle light and dark mode"
       }
@@ -60,9 +60,15 @@ export default function ThemeToggle() {
         setTheme(updatedTheme);
       }}
     >
-      {theme === "dark" ? (
+      <span aria-hidden="true" className="ui-theme-toggle__thumb" />
+      <span
+        aria-hidden="true"
+        className={[
+          "ui-theme-toggle__option",
+          theme === "light" ? "is-active" : "",
+        ].join(" ")}
+      >
         <svg
-          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -76,9 +82,16 @@ export default function ThemeToggle() {
             d="M12 3v1.5m0 15V21m9-9h-1.5M4.5 12H3m15.364 6.364l-1.06-1.06M6.697 6.697l-1.06-1.06m12.727 0l-1.06 1.06M6.697 17.303l-1.06 1.06M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
           />
         </svg>
-      ) : (
+        <span className="ui-theme-toggle__label">Light</span>
+      </span>
+      <span
+        aria-hidden="true"
+        className={[
+          "ui-theme-toggle__option",
+          theme === "dark" ? "is-active" : "",
+        ].join(" ")}
+      >
         <svg
-          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -92,8 +105,8 @@ export default function ThemeToggle() {
             d="M21.752 15.002A9.718 9.718 0 0112 21.75 9.75 9.75 0 1118.998 2.25 7.5 7.5 0 0021.75 15c0 .001 0 .001.002.002z"
           />
         </svg>
-      )}
-      <span className="hidden lg:inline">{mounted ? theme : "Theme"}</span>
+        <span className="ui-theme-toggle__label">Dark</span>
+      </span>
     </button>
   );
 }

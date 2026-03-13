@@ -105,9 +105,7 @@ export default function Page() {
                 className="flex items-center justify-between gap-4 rounded-[20px] border border-[color:var(--border)] bg-[color:var(--surface-strong)] px-4 py-4 hover:border-[color:var(--border-strong)]"
               >
                 <div>
-                  <div className="text-[1rem] font-medium leading-[1.2]">
-                    {link.label}
-                  </div>
+                  <div className="ui-inline-title">{link.label}</div>
                   <div className="ui-body mt-1">{link.detail}</div>
                 </div>
                 <span className="ui-meta">Open</span>
