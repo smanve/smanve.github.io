@@ -4,54 +4,82 @@ import { getAllProjects } from "@/lib/projects";
 
 export const metadata = {
   title: "Projects - @smanve",
-  description: "Things I’ve built, broken, and learned from.",
+  description: "Projects, experiments, and labs that taught me something real.",
 };
 
 export default function ProjectsPage() {
   const projects = getAllProjects();
 
   return (
-    <main className="space-y-6">
-      <h1 className="text-3xl font-bold">Projects</h1>
-      <p className="text-[color:var(--muted)]">
-        Stuff I’m proud of (or learned a lot from).
-      </p>
+    <section className="space-y-8">
+      <div className="space-y-4">
+        <p className="ui-kicker">Projects</p>
+        <h1 className="ui-page-title max-w-3xl">
+          Things I built when I wanted to learn something for real.
+        </h1>
+        <p className="ui-lead max-w-2xl">
+          Some began with curiosity. Some began because I got stuck and wanted
+          to understand the problem properly. Either way, I shipped something.
+        </p>
+      </div>
 
-      <ul className="grid gap-6">
-        {projects.map((p) => (
-          <li key={p.slug} className="ui-card p-4 transition-colors">
-            <Link href={`/projects/${p.slug}`} className="block space-y-3">
-              {p.hero ? (
-                <div className="relative h-44 w-full overflow-hidden rounded-lg border border-[color:var(--border)]">
-                  <Image src={p.hero} alt={p.title} fill className="object-cover" />
+      <ul className="grid gap-5 lg:grid-cols-2">
+        {projects.map((project) => (
+          <li key={project.slug} className="ui-panel overflow-hidden">
+            <Link href={`/projects/${project.slug}`} className="group block">
+              {project.hero ? (
+                <div className="relative h-56 w-full overflow-hidden border-b border-[color:var(--border)]">
+                  <Image
+                    src={project.hero}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                  />
                 </div>
               ) : null}
 
-              <h2 className="text-xl font-semibold">{p.title}</h2>
-
-              {p.tags?.length ? (
-                <div className="flex flex-wrap gap-2">
-                  {p.tags.map((t) => (
-                    <span key={t} className="ui-badge text-xs">
-                      {t}
-                    </span>
-                  ))}
+              <div className="space-y-4 p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <h2 className="ui-card-title">{project.title}</h2>
+                  <span className="ui-meta transition-transform group-hover:translate-x-0.5">
+                    -&gt;
+                  </span>
                 </div>
-              ) : null}
 
-              {p.summary && (
-                <p className="text-[color:var(--muted)]">{p.summary}</p>
-              )}
+                {project.tags?.length ? (
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="ui-badge">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+
+                {project.summary ? (
+                  <p className="ui-body">{project.summary}</p>
+                ) : null}
+              </div>
             </Link>
 
-            <div className="mt-3 flex gap-4 text-sm">
-              {p.repo && (
-                <a className="ui-link" href={p.repo} target="_blank" rel="noreferrer">
+            <div className="flex gap-4 px-6 pb-6 text-sm">
+              {project.repo && (
+                <a
+                  className="ui-link"
+                  href={project.repo}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   GitHub
                 </a>
               )}
-              {p.demo && (
-                <a className="ui-link" href={p.demo} target="_blank" rel="noreferrer">
+              {project.demo && (
+                <a
+                  className="ui-link"
+                  href={project.demo}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Live
                 </a>
               )}
@@ -59,6 +87,6 @@ export default function ProjectsPage() {
           </li>
         ))}
       </ul>
-    </main>
+    </section>
   );
 }

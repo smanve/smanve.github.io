@@ -1,160 +1,142 @@
-// src/app/page.tsx
 import Link from "next/link";
 import Projects from "./components/projects";
-import ParticlesBackground from "./ParticlesBackground";
+import { getAllPosts } from "@/lib/posts";
 
-// External links (shown as a compact 3-column row, wrapping on small screens)
 const LINKS = [
-  { href: "https://github.com/smanve", label: "gh/smanve", cta: "GitHub" },
+  {
+    href: "https://github.com/smanve",
+    label: "GitHub",
+    detail: "If you want the raw code, start here.",
+  },
   {
     href: "https://rxresu.me/manvendrasingh1999/continuous-genuine-barracuda",
-    label: "rxresu.me",
-    cta: "Resume",
+    label: "Resume",
+    detail: "Need the short version? This is it.",
   },
   {
     href: "https://www.linkedin.com/in/manvendrasingh1999/",
-    label: "li/manvendra.singh",
-    cta: "LinkedIn",
+    label: "LinkedIn",
+    detail: "The more polished version of my work history.",
   },
 ];
 
 export default function Page() {
+  const latestPost = getAllPosts()[0];
+
   return (
-    <div className="relative flex flex-col gap-8 mx-4 my-16 md:mx-0">
-      <ParticlesBackground />
+    <div className="flex flex-col gap-6">
+      <section className="grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(18rem,0.9fr)]">
+        <div className="ui-panel-strong px-6 py-8 sm:p-10">
+          <p className="ui-kicker">Software engineer in Melbourne, Australia</p>
+          <h1 className="ui-display-title mt-6 max-w-3xl">
+            I build web apps, test ideas, and write about what I learn when
+            things get messy.
+          </h1>
+          <p className="ui-lead mt-5 max-w-2xl">
+            You will mostly find frontend work here, with a few security and
+            infrastructure labs mixed in.
+          </p>
+          <p className="ui-lead mt-4 max-w-2xl">
+            I like taking vague ideas, rough edges, and awkward flows, then
+            turning them into something people can actually use. Curious how I
+            think? Start with the projects.
+          </p>
 
-      {/* Intro */}
-      <section aria-labelledby="intro" className="flex flex-col gap-4">
-        <h1 id="intro" className="text-3xl font-bold">
-          Hi <span className="text-primary">There!</span>{" "}
-          <span className="px-2 py-1 text-xs rounded-md text-white bg-primary/70">
-            <span>smanve</span>
-          </span>
-        </h1>
-
-        <div>
-          <span className="font-bold">I'm Manvendra</span>
-          <br />
-          <span className="text-zinc-700">
-            software engineer located in Melbourne, AU
-          </span>
-          <br />
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/projects" className="ui-button">
+              View projects
+            </Link>
+            <Link href="/blog" className="ui-button-secondary">
+              Read notes
+            </Link>
+          </div>
         </div>
 
-        <hr className="border-t border-gray-300 my-2" />
+        <div className="grid gap-4">
+          <section className="ui-panel p-6">
+            <p className="ui-kicker">Current focus</p>
+            <ul className="ui-body mt-5 space-y-3">
+              <li className="flex items-start gap-3">
+                <span className="mt-2 h-2 w-2 rounded-full bg-[color:var(--accent)]" />
+                End-to-end product development, from ideation to launch and iteration.
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="mt-2 h-2 w-2 rounded-full bg-[color:var(--accent)]" />
+                Getting better at cloud and security work by building small labs
+                and breaking them on purpose.
+              </li>
+            </ul>
+          </section>
 
-        <p className="text-left">
-          I'm a recent graduate with a strong foundation in web development
-          (HTML, CSS, JavaScript) and frameworks like React &amp; Angular. I{" "}
-          <b>love building</b> user-friendly web applications and problem
-          solving!
-          <br />
-          <br />
-          Outside of programming my interests include, but are not limited to
-          music <b>and</b> gaming!
-        </p>
+          <section className="ui-panel p-6">
+            <p className="ui-kicker">Latest note</p>
+            {latestPost ? (
+              <div className="mt-4 space-y-3">
+                <h2 className="ui-card-title">{latestPost.title}</h2>
+                {latestPost.summary ? (
+                  <p className="ui-body">{latestPost.summary}</p>
+                ) : null}
+                <Link href={`/blog/${latestPost.slug}`} className="ui-link">
+                  Read the post
+                </Link>
+              </div>
+            ) : (
+              <p className="ui-body mt-4">
+                More writing is on the way.
+              </p>
+            )}
+          </section>
+        </div>
       </section>
 
-      <hr className="border-t border-gray-300 my-2" />
+      <Projects />
 
-      {/* Projects teaser */}
-      <section aria-labelledby="projects">
-        <Projects />
-      </section>
-
-      <hr className="border-t border-gray-300 my-2" />
-
-      {/* Links — compact, modern, accessible */}
-      <section aria-labelledby="links" className="space-y-4">
-        <h2 id="links" className="font-sfmono text-2xl">
-          Links
-        </h2>
-
-        <ul
-          role="list"
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
-        >
-          {LINKS.map((l) => (
-            <li key={l.href}>
+      <section className="grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+        <div className="ui-panel p-6 sm:p-7">
+          <p className="ui-kicker">Around the web</p>
+          <div className="mt-6 space-y-3">
+            {LINKS.map((link) => (
               <a
-                href={l.href}
+                key={link.href}
+                href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${l.cta} – opens in a new tab`}
-                className="
-                  group block rounded-xl
-                  bg-[#0b1220] text-zinc-100
-                  p-3 text-sm transition
-                  hover:shadow-md
-                  focus-visible:outline-none
-                  focus-visible:ring-2 focus-visible:ring-primary/70
-                  focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]
-                "
+                className="flex items-center justify-between gap-4 rounded-[20px] border border-[color:var(--border)] bg-[color:var(--surface-strong)] px-4 py-4 hover:border-[color:var(--border-strong)]"
               >
-                <div className="font-mono">{l.label}</div>
-                <div className="mt-2 inline-flex items-center gap-1 rounded bg-amber-700/90 px-2 py-0.5 text-xs">
-                  <span>{l.cta}</span>
-                  {/* external-link icon (decorative) */}
-                  <svg
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-3.5 w-3.5"
-                  >
-                    <path d="M13.5 3h7.5v7.5h-1.5V5.56l-9.22 9.22-1.06-1.06L18.44 4.5H13.5V3ZM5 5h6v1.5H6.5A1.5 1.5 0 0 0 5 8v9.5A1.5 1.5 0 0 0 6.5 19h9.5a1.5 1.5 0 0 0 1.5-1.5V13H19v4.5A3 3 0 0 1 16 20.5H6.5A3 3 0 0 1 3.5 17.5V8A3 3 0 0 1 6.5 5.5H11V5H5Z" />
-                  </svg>
+                <div>
+                  <div className="text-[1rem] font-medium leading-[1.2]">
+                    {link.label}
+                  </div>
+                  <div className="ui-body mt-1">{link.detail}</div>
                 </div>
+                <span className="ui-meta">Open</span>
               </a>
-            </li>
-          ))}
-        </ul>
+            ))}
+          </div>
+        </div>
+
+        <section className="ui-panel p-6 sm:p-7">
+          <p className="ui-kicker">Contact</p>
+          <div className="mt-6 space-y-4">
+            <h2 className="ui-section-title max-w-lg">
+              Have a role, project, or just a question?
+            </h2>
+            <p className="ui-body">
+              Send me an email. I usually reply there fastest, and it is still
+              the easiest place to have a proper conversation.
+            </p>
+            <a href="mailto:manvendrasingh1999@gmail.com" className="ui-button">
+              Email me
+            </a>
+          </div>
+        </section>
       </section>
 
-      <hr className="border-t border-gray-300 my-2" />
-
-      {/* Contact */}
-      <section aria-labelledby="contact" className="space-y-4">
-        <h2 id="contact" className="font-sfmono text-2xl">
-          Contact
-        </h2>
-        <p>
-          <a
-            href="mailto:manvendrasingh1999@gmail.com"
-            className="
-              inline-flex items-center gap-2 font-bold underline
-              text-primary/70 hover:text-primary
-              focus-visible:outline-none focus-visible:ring-2
-              focus-visible:ring-primary/70 focus-visible:ring-offset-2
-              focus-visible:ring-offset-[var(--surface)]
-            "
-          >
-            email
-            <svg
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2.5"
-              stroke="currentColor"
-              className="h-4 w-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-              />
-            </svg>
-          </a>
-        </p>
-      </section>
-
-      <hr className="border-t border-gray-300 my-2" />
-
-      <footer>
-        <h2 className="font-sfmono text-l">
-          {"@smanve " + new Date().getFullYear()}
-        </h2>
+      <footer className="flex flex-col gap-3 border-t border-[color:var(--border)] pt-6 text-sm text-[color:var(--muted)] sm:flex-row sm:items-center sm:justify-between">
+        <div className="font-sfmono text-xs uppercase tracking-[0.18em]">
+          @smanve
+        </div>
+        <div>{new Date().getFullYear()}</div>
       </footer>
     </div>
   );

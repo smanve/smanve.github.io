@@ -1,6 +1,6 @@
 ---
 title: "Setting Up Active Directory for Beginners"
-summary: "I recently did a short 2-hour guided lab where I set up Active Directory Domain Services on a Windows Server. Instead of going deep into theory, I'll focused on what I actually had to do and the little problems that popped up along the way."
+summary: "I set up a small AD DS lab on Windows Server and wrote down the parts that actually mattered: DNS, time sync, group policy, and the bits that broke first."
 date: "2025-08-13"
 tags: ["Windows Server", "AD DS", "GPO", "Security", "PowerShell"]
 hero: "/projects/ad-ds-guided.png"
@@ -8,63 +8,49 @@ hero: "/projects/ad-ds-guided.png"
 
 ## What I built
 
-* A Windows Server promoted to a **Domain Controller** for `corp.local` (think: the “boss” of the network)
-* A basic **OU (Organizational Unit) structure** to keep things tidy (`Corp Users`, `Workstations`)
-* A couple of **users and groups**, with a role-based pattern (e.g. Helpdesk group)
-* **Password policies** – one for everyone, and a stricter one for admins
-* Some **baseline Group Policies** to lock things down
+- A Windows Server promoted to a **Domain Controller** for `corp.local`
+- A basic **OU (Organizational Unit) structure** to keep users and workstations tidy
+- A couple of **users and groups** with a simple role-based setup
+- **Password policies** - one for everyone, and a stricter one for admins
+- Some baseline **Group Policies** to lock things down
 
----
+## Core steps (plain English)
 
-## Core steps (in plain English)
+1. **Promoted the server to a Domain Controller** so it could run AD DS.
+2. **Created OUs** to separate users and computers.
+3. **Added users and groups** to test a small role-based setup.
+4. **Set password rules** for regular users and admins.
+5. **Applied baseline security policies** through GPOs.
 
-1. **Made the server a Domain Controller** – so it could run AD DS.
-2. **Created OUs** – folders where you keep users/computers for easier management.
-3. **Added users & groups** – e.g. created Emily Chen, then put her into the Helpdesk group.
-4. **Set password rules** – 12+ characters for normal users, 16+ for admins.
-5. **Applied baseline security policies** – through Group Policy Objects (GPOs).
+## What went wrong
 
----
+- **DNS and time matter more than you think.** If the Domain Controller is not using itself as DNS, or the time drifts, **Kerberos breaks** and sign-ins fail.
 
-## The real lessons (things that went wrong)
+  Fix: point DNS to `127.0.0.1` and make the server a reliable time source.
 
-* **DNS & time are everything.** If your Domain Controller isn’t using itself as DNS or the time drifts, **Kerberos breaks** and logins fail.
+- **OU structure is worth thinking through early.** Dropping policies at the domain root gets messy fast. It is easier to manage users and devices when they already sit in the right OUs.
 
-  * Fix: point DNS to `127.0.0.1` and make the DC a reliable time source.
+- **Password policy scope can trip you up.** The default domain policy applies broadly. Fine-grained password policies only work for the groups you target on purpose.
 
-* **Think about OUs first.** Don’t dump policies at the domain root. Put computers/users into OUs and link GPOs there.
+- **Never assume a policy applied.** I had to keep checking with tools like `gpresult /r` and `whoami /all` instead of trusting the UI.
 
-* **Password rules aren’t always obvious.** The “Default Domain Policy” applies to everyone, but fine-grained policies only kick in for the groups you explicitly target.
-
-* **Don’t assume policies applied.** Always check with tools like `gpresult /r` or `whoami /all` to confirm.
-
-* **Automate early.** PowerShell makes life easier when adding multiple users/groups – way faster than clicking.
-
-* **Use groups properly.** Instead of giving people permissions directly, add them to groups and assign access at the group level. Cleaner, safer, easier to audit.
-
----
+- **PowerShell saves time quickly.** Creating multiple users and groups by hand gets old after about five minutes.
 
 ## Quick checks I ran
 
-* `Get-ADDomain; Get-ADForest` – make sure the domain is alive.
-* `gpresult /r` – confirm which policies apply to a workstation.
-* `whoami /all` – see what groups/privileges a logged-in user has.
-
----
+- `Get-ADDomain; Get-ADForest` to make sure the domain was healthy
+- `gpresult /r` to confirm which policies reached a workstation
+- `whoami /all` to see group membership and privileges for a signed-in user
 
 ## What I learned
 
-* A reliable AD setup starts with **good DNS, correct time, and a sensible OU design**.
-* **Group Policies are powerful** but can also cause chaos – test them in a lab first.
-* Fine-grained password policies are best used for special cases (like admins), not everyone.
-* **Scripts > clicking around.** Automation makes your setup reproducible.
+- Good AD setups start with **DNS, time sync, and a sensible OU structure**
+- **Group Policy is powerful**, but it can also create chaos if you test carelessly
+- Fine-grained password policies are best for special cases, not every account
+- **Scripts beat clicking around** when you want repeatable setup steps
 
----
+## What is next
 
-## What’s next
-
-* Add a second Domain Controller for backup.
-* Set up **System State backups**.
-* Write and test a **restore runbook** (so I know how to recover if things break).
-
----
+- Add a second Domain Controller for redundancy
+- Set up **System State backups**
+- Write and test a recovery runbook so I know what to do if the lab falls over

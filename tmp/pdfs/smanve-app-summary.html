@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>smanve app summary</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 10mm;
+    }
+
+    :root {
+      --ink: #0f172a;
+      --muted: #475569;
+      --line: #cbd5e1;
+      --accent: #0f766e;
+      --accent-soft: #ecfeff;
+      --panel: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 190mm;
+      min-height: 277mm;
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10mm;
+      align-items: start;
+      padding-bottom: 4mm;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0 0 2mm;
+      font-size: 23px;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .dek {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.35;
+      max-width: 118mm;
+    }
+
+    .badge-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2mm;
+      justify-content: flex-end;
+      align-content: start;
+      max-width: 52mm;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 1.5mm 2.5mm;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 9px;
+      font-weight: 700;
+      border: 1px solid #99f6e4;
+      white-space: nowrap;
+    }
+
+    .cols {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 7mm;
+      padding-top: 5mm;
+    }
+
+    section {
+      margin: 0 0 4.5mm;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 4mm;
+    }
+
+    h2 {
+      margin: 0 0 2.4mm;
+      color: var(--accent);
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    p {
+      margin: 0;
+      font-size: 10.4px;
+      line-height: 1.38;
+    }
+
+    .small {
+      font-size: 9.4px;
+      line-height: 1.32;
+      color: var(--muted);
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 4.5mm;
+    }
+
+    li {
+      margin: 0 0 1.5mm;
+      font-size: 10px;
+      line-height: 1.28;
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+
+    .persona {
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .flow {
+      display: grid;
+      gap: 2.6mm;
+      margin-bottom: 3mm;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 7mm 1fr;
+      gap: 2.5mm;
+      align-items: start;
+    }
+
+    .step-num {
+      width: 7mm;
+      height: 7mm;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #ffffff;
+      text-align: center;
+      font-size: 9.5px;
+      line-height: 7mm;
+      font-weight: 700;
+    }
+
+    .step-body {
+      font-size: 9.9px;
+      line-height: 1.28;
+    }
+
+    .mono {
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 9px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      padding: 0.3mm 1mm;
+      white-space: nowrap;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 3.2mm 0;
+    }
+
+    .footer {
+      margin-top: 2mm;
+      padding-top: 3mm;
+      border-top: 1px solid var(--line);
+      font-size: 8.8px;
+      line-height: 1.28;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div>
+        <h1>smanve.github.io</h1>
+        <p class="dek">
+          A personal portfolio and writing site for Manvendra Singh, built with Next.js and local MDX content.
+          The app presents a landing page, project showcase, and blog-style long-form pages backed directly by files in the repo.
+        </p>
+      </div>
+      <div class="badge-stack" aria-label="summary badges">
+        <span class="badge">Next.js 14</span>
+        <span class="badge">App Router</span>
+        <span class="badge">MDX content</span>
+        <span class="badge">Static slugs</span>
+      </div>
+    </header>
+
+    <div class="cols">
+      <div>
+        <section class="card">
+          <h2>Who It Is For</h2>
+          <p>
+            <span class="persona">Primary persona (inferred from repo):</span> recruiters, hiring managers, and technical peers reviewing
+            Manvendra Singh's background, projects, and engineering writing.
+          </p>
+        </section>
+
+        <section class="card">
+          <h2>What It Does</h2>
+          <ul>
+            <li>Shows a personal intro, location, and external profile links on the home page.</li>
+            <li>Uses a sticky top nav for Home, Blog, and Projects routes.</li>
+            <li>Highlights the latest three projects on the landing page.</li>
+            <li>Publishes blog posts from local <span class="mono">content/posts/*.mdx</span> files.</li>
+            <li>Publishes project detail pages with hero images, tags, and GitHub/live links.</li>
+            <li>Adds a particle animation layer for the site's visual identity.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>How To Run</h2>
+          <ol>
+            <li>Install Node.js <span class="mono">&gt;= 18.17</span>.</li>
+            <li>From the repo root, run <span class="mono">npm install</span>.</li>
+            <li>Start the app with <span class="mono">npm run dev</span> and open <span class="mono">http://localhost:3000</span>.</li>
+            <li>Environment variables or extra setup: <strong>Not found in repo.</strong></li>
+          </ol>
+        </section>
+      </div>
+
+      <div>
+        <section class="card">
+          <h2>How It Works</h2>
+          <div class="flow">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                Routes in <span class="mono">src/app</span> render the Home, Blog, and Projects pages inside a shared layout and sticky header.
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                Server-side helpers in <span class="mono">src/lib/posts.ts</span> and <span class="mono">src/lib/projects.ts</span> read local MDX files
+                with <span class="mono">fs</span> and <span class="mono">gray-matter</span> to build content lists.
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                Dynamic <span class="mono">[slug]</span> routes call <span class="mono">generateStaticParams</span> and compile MDX with
+                <span class="mono">next-mdx-remote/rsc</span>, <span class="mono">remark-gfm</span>, and <span class="mono">rehype-slug</span>.
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                Assets come from <span class="mono">public/</span>, while client-only components handle active nav state and the
+                <span class="mono">react-particles</span> background driven by <span class="mono">particles.json</span>.
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <p>
+            Backend API, database, authentication service, and external data integrations:
+            <strong>Not found in repo.</strong>
+          </p>
+        </section>
+
+        <section class="card">
+          <h2>Evidence Base</h2>
+          <p class="small">
+            Summary derived from <span class="mono">package.json</span>, <span class="mono">src/app/*</span>,
+            <span class="mono">src/lib/*</span>, <span class="mono">content/posts/*</span>, <span class="mono">content/projects/*</span>,
+            <span class="mono">particles.json</span>, and files in <span class="mono">public/</span>.
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <div class="footer">
+      One-page repo summary generated from local source evidence only.
+    </div>
+  </div>
+</body>
+</html>

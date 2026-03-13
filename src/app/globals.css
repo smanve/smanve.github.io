@@ -11,77 +11,112 @@ html::-webkit-scrollbar {
   width: 0px;
 }
 
-/* -------------------------------
-   ChatGPT-ish minimal theme tokens
-   ------------------------------- */
 :root {
-  /* Surfaces */
-  --bg: #f7f7f8;        /* page background */
-  --surface: #ffffff;   /* cards / panels */
-  --surface-2: #f3f4f6; /* subtle hover / alt surface */
+  --font-sans: "SF Pro Display", "SF Pro Text", "Segoe UI Variable",
+    "Segoe UI", system-ui, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
 
-  /* Ink */
-  --text: #0f172a;
-  --muted: #64748b;
-
-  /* UI */
-  --border: rgba(15, 23, 42, 0.10);
-  --ring: rgba(16, 163, 127, 0.25);
-  --accent: #10a37f;
-
-  --radius: 14px;
+  --bg: #f5f5f0;
+  --bg-strong: rgba(255, 255, 255, 0.78);
+  --surface: rgba(255, 255, 255, 0.86);
+  --surface-strong: #ffffff;
+  --surface-muted: #ecefe7;
+  --text: #111111;
+  --muted: #5f6b62;
+  --border: rgba(17, 17, 17, 0.08);
+  --border-strong: rgba(17, 17, 17, 0.12);
+  --accent: #127a63;
+  --accent-strong: #0f6653;
+  --accent-soft: rgba(18, 122, 99, 0.12);
+  --accent-button: #2b7462;
+  --accent-button-hover: #235f51;
+  --ring: rgba(18, 122, 99, 0.24);
+  --shadow-soft: 0 1px 2px rgba(17, 17, 17, 0.04),
+    0 24px 60px rgba(17, 17, 17, 0.06);
+  --shadow-panel: 0 1px 2px rgba(17, 17, 17, 0.04),
+    0 16px 40px rgba(17, 17, 17, 0.05);
+  --radius-lg: 28px;
+  --radius-md: 20px;
+  --radius-sm: 14px;
 }
 
-/* Dark mode via system preference */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f0f10;
-    --surface: #171717;
-    --surface-2: #1f1f1f;
-
-    --text: #e5e7eb;
-    --muted: #9ca3af;
-
-    --border: rgba(229, 231, 235, 0.10);
-    --ring: rgba(16, 163, 127, 0.30);
+    --bg: #0d100e;
+    --bg-strong: rgba(15, 18, 16, 0.72);
+    --surface: rgba(22, 27, 24, 0.86);
+    --surface-strong: #161b18;
+    --surface-muted: #1d2420;
+    --text: #f5f5f0;
+    --muted: #a5b0a7;
+    --border: rgba(245, 245, 240, 0.08);
+    --border-strong: rgba(245, 245, 240, 0.14);
+    --accent: #56c2a1;
+    --accent-strong: #77d8b8;
+    --accent-soft: rgba(86, 194, 161, 0.16);
+    --accent-button: #3b8671;
+    --accent-button-hover: #326f5f;
+    --ring: rgba(86, 194, 161, 0.26);
+    --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.35),
+      0 24px 60px rgba(0, 0, 0, 0.26);
+    --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.32),
+      0 16px 40px rgba(0, 0, 0, 0.2);
   }
 }
 
-/* Optional manual override if you add className="dark" to <html> */
 .dark {
-  --bg: #0f0f10;
-  --surface: #171717;
-  --surface-2: #1f1f1f;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --border: rgba(229, 231, 235, 0.10);
-  --ring: rgba(16, 163, 127, 0.30);
+  --bg: #0d100e;
+  --bg-strong: rgba(15, 18, 16, 0.72);
+  --surface: rgba(22, 27, 24, 0.86);
+  --surface-strong: #161b18;
+  --surface-muted: #1d2420;
+  --text: #f5f5f0;
+  --muted: #a5b0a7;
+  --border: rgba(245, 245, 240, 0.08);
+  --border-strong: rgba(245, 245, 240, 0.14);
+  --accent: #56c2a1;
+  --accent-strong: #77d8b8;
+  --accent-soft: rgba(86, 194, 161, 0.16);
+  --accent-button: #3b8671;
+  --accent-button-hover: #326f5f;
+  --ring: rgba(86, 194, 161, 0.26);
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.35),
+    0 24px 60px rgba(0, 0, 0, 0.26);
+  --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.32),
+    0 16px 40px rgba(0, 0, 0, 0.2);
 }
 
 body {
+  min-height: 100vh;
+  font-family: var(--font-sans);
   background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at top, var(--accent-soft), transparent 30%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg), #ffffff 18%) 0%,
+      var(--bg) 48%,
+      color-mix(in srgb, var(--bg), #000000 2%) 100%
+    );
   color: var(--text);
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
 }
 
-/* Minimal but accessible focus */
 :focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
 
-/* -------------------------------
-   Fonts
-   ------------------------------- */
 @font-face {
   font-family: "SF Mono";
   src: url("/assets/fonts/SFMono-Regular.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: "SF Mono";
   src: url("/assets/fonts/SFMono-Bold.otf") format("opentype");
@@ -90,73 +125,211 @@ body {
 }
 
 .font-sfmono {
-  font-family: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-mono);
 }
 
-/* Your old .font-sfmonobold was invalid (font-family can't be "bold") */
 .font-sfmonobold {
-  font-family: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-mono);
   font-weight: 700;
 }
 
-/* -------------------------------
-   Tiny UI helpers (optional)
-   ------------------------------- */
-.ui-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+::selection {
+  background: var(--accent);
+  color: #ffffff;
 }
-.ui-card:hover {
-  background: color-mix(in oklab, var(--surface), var(--surface-2) 35%);
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: -0.035em;
+}
+
+p {
+  line-height: 1.72;
+}
+
+a {
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.ui-panel {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(20px);
+}
+
+.ui-panel-strong {
+  border: 1px solid var(--border-strong);
+  background: var(--surface-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.ui-panel:hover {
+  border-color: var(--border-strong);
 }
 
 .ui-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  padding: 0.125rem 0.5rem;
+  padding: 0.4rem 0.75rem;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--surface), var(--surface-2) 40%);
+  background: color-mix(in srgb, var(--surface-muted), transparent 12%);
   color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1;
 }
 
 .ui-link {
-  color: color-mix(in oklab, var(--accent), var(--text) 12%);
+  color: var(--accent);
+  text-decoration: none;
   text-underline-offset: 4px;
 }
+
 .ui-link:hover {
   text-decoration: underline;
 }
 
-/* -------------------------------
-   Prose / code styling
-   ------------------------------- */
+.ui-button,
+.ui-button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+  min-height: 3rem;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.94rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
 
-/* ✅ Fix low contrast prose text (Tailwind Typography) */
+.ui-button {
+  border: 1px solid color-mix(in srgb, var(--accent-button), transparent 8%);
+  background: var(--accent-button);
+  color: #ffffff;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--accent-button), transparent 86%);
+}
+
+.ui-button:hover {
+  background: var(--accent-button-hover);
+  transform: translateY(-1px);
+}
+
+.ui-button-secondary {
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface), transparent 10%);
+  color: var(--text);
+}
+
+.ui-button-secondary:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+}
+
+.ui-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.ui-display-title {
+  font-size: clamp(2.45rem, 5vw, 4.5rem);
+  line-height: 1.04;
+  font-weight: 600;
+}
+
+.ui-page-title {
+  font-size: clamp(2.15rem, 4vw, 3.45rem);
+  line-height: 1.08;
+  font-weight: 600;
+}
+
+.ui-section-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  line-height: 1.12;
+  font-weight: 600;
+}
+
+.ui-card-title {
+  font-size: clamp(1.22rem, 1.4vw, 1.55rem);
+  line-height: 1.18;
+  font-weight: 600;
+}
+
+.ui-lead {
+  font-size: 1.05rem;
+  line-height: 1.72;
+  color: var(--muted);
+}
+
+.ui-body {
+  font-size: 0.96rem;
+  line-height: 1.68;
+  color: var(--muted);
+}
+
+.ui-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.ui-back-link:hover {
+  color: var(--text);
+}
+
+.ui-meta {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
 .prose {
   color: var(--text);
-
   --tw-prose-body: var(--text);
   --tw-prose-headings: var(--text);
   --tw-prose-lead: var(--text);
-  --tw-prose-links: color-mix(in oklab, var(--accent), var(--text) 12%);
+  --tw-prose-links: var(--accent);
   --tw-prose-bold: var(--text);
-
   --tw-prose-counters: var(--muted);
   --tw-prose-bullets: var(--muted);
   --tw-prose-captions: var(--muted);
-
   --tw-prose-hr: var(--border);
   --tw-prose-quote-borders: var(--border);
   --tw-prose-th-borders: var(--border);
   --tw-prose-td-borders: var(--border);
-
   --tw-prose-quotes: var(--text);
   --tw-prose-code: var(--text);
+  --tw-prose-pre-code: var(--text);
+  --tw-prose-pre-bg: transparent;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  scroll-margin-top: 7rem;
 }
 
 .prose a:hover {
@@ -164,41 +337,57 @@ body {
   text-underline-offset: 4px;
 }
 
-/* Inline code chips (ChatGPT-ish: subtle border, quiet bg) */
 .prose :not(pre) > code {
-  background-color: color-mix(in oklab, var(--surface), var(--text) 7%);
+  background-color: color-mix(in srgb, var(--surface-muted), transparent 12%);
   border: 1px solid var(--border);
   color: var(--text);
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.375rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.5rem;
   font-weight: 500;
+  font-size: 0.9em;
 }
 
-/* Remove Tailwind Typography’s fake backticks */
 .prose :not(pre) > code::before,
 .prose :not(pre) > code::after {
   content: none !important;
 }
 
-/* Code blocks */
 .prose pre {
-  background: color-mix(in oklab, var(--surface), var(--text) 9%);
+  background: color-mix(in srgb, var(--surface-muted), transparent 6%);
   border: 1px solid var(--border);
   color: var(--text);
-  border-radius: 0.75rem;
-  padding: 1rem;
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.2rem;
   overflow-x: auto;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
+
 .prose pre code {
   background: transparent;
   padding: 0;
   color: inherit;
 }
 
-/* Force code-ish elements to use the same font as the rest of the site */
 code,
 pre,
 kbd,
 samp {
-  font-family: inherit;
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 640px) {
+  .ui-panel,
+  .ui-panel-strong {
+    border-radius: 24px;
+  }
+
+  .ui-button,
+  .ui-button-secondary {
+    min-height: 2.85rem;
+    padding: 0.8rem 1.15rem;
+  }
+
+  .ui-lead {
+    font-size: 1rem;
+  }
 }

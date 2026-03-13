@@ -1,61 +1,75 @@
-// Server Component (no "use client")
-// Shows top 2–3 projects from content/projects/*.mdx
 import Link from "next/link";
 import Image from "next/image";
 import { getAllProjects } from "@/lib/projects";
 
 export default function Projects() {
-  // Grab latest 3 projects (by date desc)
   const projects = getAllProjects().slice(0, 3);
   if (projects.length === 0) return null;
 
   return (
-    <section className="space-y-4">
-      <div className="flex items-baseline justify-between">
-        <h2 className="font-sfmono text-2xl">Projects</h2>
+    <section className="space-y-5">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="space-y-3">
+          <p className="ui-kicker">Selected work</p>
+          <div>
+            <h2 className="ui-section-title">
+              A few things I built, and a few things I learned the hard way.
+            </h2>
+            <p className="ui-body mt-3 max-w-2xl">
+              Some started as experiments. Some came from work I wanted to
+              understand better. Each one pushed me a bit further.
+            </p>
+          </div>
+        </div>
+
         <Link
           href="/projects"
-          className="underline text-primary/70 hover:text-primary"
+          className="ui-button-secondary self-start"
         >
-          View all
+          View all projects
         </Link>
       </div>
 
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {projects.map((p) => (
-          <li
-            key={p.slug}
-            className="border rounded-lg p-4 hover:shadow transition"
-          >
-            <Link href={`/projects/${p.slug}`} className="block space-y-2">
-              {p.hero ? (
-                <div className="relative w-full h-36 overflow-hidden rounded">
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {projects.map((project) => (
+          <li key={project.slug} className="ui-panel overflow-hidden">
+            <Link
+              href={`/projects/${project.slug}`}
+              className="group flex h-full flex-col"
+            >
+              {project.hero ? (
+                <div className="relative h-48 w-full overflow-hidden border-b border-[color:var(--border)]">
                   <Image
-                    src={p.hero}
-                    alt={p.title}
+                    src={project.hero}
+                    alt={project.title}
                     fill
-                    className="object-cover"
+                    className="object-cover transition duration-300 group-hover:scale-[1.02]"
                   />
                 </div>
               ) : null}
 
-              <div className="font-semibold">{p.title}</div>
-              {p.summary && (
-                <p className="text-sm opacity-80">{p.summary}</p>
-              )}
-
-              {p.tags?.length ? (
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {p.tags.slice(0, 3).map((t) => (
-                    <span
-                      key={t}
-                      className="px-2 py-0.5 text-xs rounded bg-primary/10 text-primary"
-                    >
-                      {t}
-                    </span>
-                  ))}
+              <div className="flex flex-1 flex-col gap-4 p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="ui-card-title">{project.title}</h3>
+                  <span className="ui-meta transition-transform group-hover:translate-x-0.5">
+                    -&gt;
+                  </span>
                 </div>
-              ) : null}
+
+                {project.summary ? (
+                  <p className="ui-body">{project.summary}</p>
+                ) : null}
+
+                {project.tags?.length ? (
+                  <div className="mt-auto flex flex-wrap gap-2">
+                    {project.tags.slice(0, 3).map((tag) => (
+                      <span key={tag} className="ui-badge">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
             </Link>
           </li>
         ))}

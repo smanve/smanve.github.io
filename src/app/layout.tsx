@@ -15,7 +15,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <meta name="author" content="Manvendra Singh" />
 
-        {/* Open Graph */}
         <meta property="og:title" content="Manvendra Singh" />
         <meta
           property="og:description"
@@ -31,9 +30,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="manifest" href="/site.webmanifest" />
       </head>
 
-      <body className="min-h-screen bg-[color:var(--bg)] text-[color:var(--text)] antialiased font-sans selection:bg-[color:var(--accent)] selection:text-white">
+      <body className="min-h-screen bg-[color:var(--bg)] text-[color:var(--text)] antialiased">
         <SiteHeader />
-        <main className="mx-auto max-w-2xl px-4 py-6">{children}</main>
+        <main className="mx-auto max-w-5xl px-4 pb-20 pt-8 sm:px-6 sm:pt-10">
+          {children}
+        </main>
       </body>
     </html>
   );

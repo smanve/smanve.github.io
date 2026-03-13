@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
+import { formatDate } from "@/lib/formatDate";
 import { getAllProjects, getProjectFile } from "@/lib/projects";
 
 type FM = {
@@ -18,7 +19,7 @@ type FM = {
 };
 
 export async function generateStaticParams() {
-  return getAllProjects().map((p) => ({ slug: p.slug }));
+  return getAllProjects().map((project) => ({ slug: project.slug }));
 }
 
 export default async function ProjectDetail({
@@ -39,59 +40,83 @@ export default async function ProjectDetail({
   });
 
   return (
-    <main className="space-y-6">
+    <section className="mx-auto max-w-3xl space-y-6">
       <nav className="text-sm">
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-1 text-[color:var(--muted)] hover:text-[color:var(--text)]"
-        >
-          ← Back to Projects
+        <Link href="/projects" className="ui-back-link">
+          <span aria-hidden="true">&lt;-</span>
+          <span>Back to projects</span>
         </Link>
       </nav>
 
-      <h1 className="text-3xl font-bold">{frontmatter.title ?? params.slug}</h1>
+      <header className="ui-panel-strong p-6 sm:p-8">
+        <div className="space-y-5">
+          {frontmatter.tags?.length ? (
+            <div className="flex flex-wrap gap-2">
+              {frontmatter.tags.map((tag) => (
+                <span key={tag} className="ui-badge">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          ) : null}
 
-      {/* tags */}
-      {frontmatter.tags?.length ? (
-        <div className="flex flex-wrap gap-2">
-          {frontmatter.tags.map((t) => (
-            <span key={t} className="ui-badge text-xs">
-              {t}
-            </span>
-          ))}
+          <div className="space-y-3">
+            <h1 className="ui-page-title">
+              {frontmatter.title ?? params.slug}
+            </h1>
+            {frontmatter.summary ? (
+              <p className="ui-lead">{frontmatter.summary}</p>
+            ) : null}
+            {frontmatter.date ? (
+              <div className="ui-meta">{formatDate(frontmatter.date)}</div>
+            ) : null}
+          </div>
+
+          {(frontmatter.repo || frontmatter.demo) && (
+            <div className="flex flex-wrap gap-3 text-sm">
+              {frontmatter.repo && (
+                <a
+                  className="ui-button-secondary"
+                  href={frontmatter.repo}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  GitHub
+                </a>
+              )}
+              {frontmatter.demo && (
+                <a
+                  className="ui-button"
+                  href={frontmatter.demo}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Live project
+                </a>
+              )}
+            </div>
+          )}
         </div>
-      ) : null}
+      </header>
 
-      {/* hero image */}
       {frontmatter.hero ? (
-        <div className="relative h-64 w-full overflow-hidden rounded-lg border border-[color:var(--border)]">
-          <Image
-            src={frontmatter.hero}
-            alt={frontmatter.title ?? ""}
-            fill
-            className="object-cover"
-          />
+        <div className="ui-panel overflow-hidden">
+          <div className="relative h-72 w-full overflow-hidden">
+            <Image
+              src={frontmatter.hero}
+              alt={frontmatter.title ?? ""}
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
       ) : null}
 
-      {/* MDX body (✅ readable in dark mode) */}
-      <article className="prose max-w-none prose-a:text-[color:var(--accent)] hover:prose-a:underline">
-        {content}
-      </article>
-
-      {/* links */}
-      <div className="flex gap-4 text-sm">
-        {frontmatter.repo && (
-          <a className="ui-link" href={frontmatter.repo} target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-        )}
-        {frontmatter.demo && (
-          <a className="ui-link" href={frontmatter.demo} target="_blank" rel="noreferrer">
-            Live
-          </a>
-        )}
+      <div className="ui-panel p-6 sm:p-8">
+        <article className="prose max-w-none prose-a:text-[color:var(--accent)]">
+          {content}
+        </article>
       </div>
-    </main>
+    </section>
   );
 }

@@ -1,37 +1,56 @@
 ---
-title: "What I’ve Been Learning During My Internship at Diagno Energy"
+title: "What I've Been Learning During My Internship at Diagno Energy"
 date: "2025-12-23"
-summary: "A few practical lessons I’ve picked up while shipping real features"
+summary: "What changes when your code has real users? A few lessons from my internship made that pretty obvious, pretty fast."
 ---
 
-I’ve been interning at **Diagno Energy**, and it’s been one of those experiences where you learn *a lot* simply because the work is real: real users, real edge cases, and real expectations around quality.
+I've been interning at **Diagno Energy**, and one thing became obvious pretty quickly.
 
-This post is a reflection on what I’ve been learning (keeping it high-level and confidential).
+The work is real.
+The users are real.
+The mistakes are real too.
 
-## 1) Shipping beats “perfect”
-At uni and in personal projects, it’s easy to keep polishing forever. In a team setting, you learn to make progress in a way that’s:
+That changes how you think.
 
-- **Incremental** (small changes that are easy to review)
-- **Testable** (clear before/after behaviour)
-- **Reversible** (safe changes, minimal blast radius)
+This is a short note on what has been sticking with me.
 
-That mindset shift alone has made me a better engineer.
+## 1) Shipping beats "perfect"
+
+At uni and in personal projects, it is easy to keep polishing forever.
+
+In a team, you learn to move in a way that is:
+
+- **Incremental** - small changes are easier to review
+- **Testable** - you can explain what changed and why
+- **Reversible** - if something goes wrong, the blast radius stays small
+
+That shift alone has made me better.
 
 ## 2) Data-heavy UI is a different beast
-A big part of my work has involved building/working on UI that depends on data. A few things that clicked for me:
 
-- The UI is only as good as the **shape of the data** you request.
-- “Just fetch everything” is usually the start of performance problems.
-- The best UX is often **fast + predictable**, not flashy.
+A big part of my work has involved UI that depends on data.
 
-## 3) Performance is mostly about being intentional
-I used to think performance work was only about optimising code. In practice, it’s often about *design choices*:
+A few things clicked for me:
 
-- Don’t render what the user can’t see yet.
-- Don’t fetch what the UI doesn’t need yet.
-- Keep heavy components off the critical path.
+- The UI is only as good as the **shape of the data** you ask for
+- "Just fetch everything" usually becomes a performance problem later
+- The best UX is often **fast and predictable**, not flashy
 
-A pattern that’s been useful is lazy-loading secondary UI:
+Have you ever used a product that felt slow, even though nothing looked broken? A lot of that starts here.
+
+## 3) Performance is often about restraint
+
+I used to think performance work mostly meant optimizing code.
+
+It does sometimes.
+
+But a lot of it comes down to product choices:
+
+- Do not render what the user cannot see yet
+- Do not fetch what the UI does not need yet
+- Keep heavy components off the critical path
+
+One pattern that helped me was lazy-loading secondary UI:
 
 ```tsx
 import React from "react";
@@ -40,54 +59,63 @@ const DetailsPanel = React.lazy(() => import("./DetailsPanel"));
 
 export function Page() {
   return (
-    <React.Suspense fallback={<div>Loading…</div>}>
+    <React.Suspense fallback={<div>Loading...</div>}>
       <DetailsPanel />
     </React.Suspense>
   );
 }
-````
+```
 
-It’s simple, but it can make a page feel instantly more responsive.
+Simple, but useful.
 
-## 4) “Good enough” queries don’t scale
+## 4) "Good enough" queries do not stay good enough
 
-I’ve learned to respect the difference between:
+I have learned to respect the gap between:
 
-* **A query that works**
-* **A query that works efficiently for the next 6 months**
+- **A query that works**
+- **A query that still works well six months later**
 
-Reducing payload size, avoiding over-fetching, and thinking about “what do we *actually* display?” makes a noticeable difference (especially when a UI is map-driven or has side panels / drill-down views).
+Reducing payload size, avoiding over-fetching, and asking "what do we actually show?" makes a real difference.
 
-## 5) Clean communication is a technical skill
+Especially when the UI has maps, side panels, or drill-down views.
 
-The best engineers I’ve worked with communicate clearly:
+## 5) Clear communication is part of the job
 
-* They write PR descriptions that explain *why*, not just *what*.
-* They ask good questions early (before going down the wrong path).
-* They document decisions so the next person isn’t guessing.
+The best engineers I have worked with are also good communicators.
 
-I’ve been trying to copy that: write small updates, be transparent when I’m unsure, and leave a trail that helps future me (and the team).
+- They explain *why*, not just *what*
+- They ask questions early
+- They leave enough context behind that the next person is not guessing
 
-## 6) You learn faster when you treat feedback as the job
+I have been trying to copy that.
 
-Code reviews have been one of the highest signal learning tools for me. The goal isn’t to “get it approved” - it’s to understand:
+Small updates help.
+Clear PR descriptions help.
+Admitting "I am not sure yet" early helps even more.
 
-* Why a certain approach is preferred
-* What patterns the codebase is optimised for
-* What risks I might not be seeing yet (edge cases, maintainability, consistency)
+## 6) Feedback is where the growth is
 
-## What I’m taking forward
+Code review has probably been the highest-signal learning loop for me so far.
 
-If I had to summarise my biggest takeaways so far:
+The goal is not just to "get it approved."
 
-* **Start small, ship safely, iterate**
-* **Performance is a product feature**
-* **Request less data, shape it better**
-* **Write code for teammates, not just compilers**
-* **Feedback loops are where growth happens**
+It is to understand:
 
-I’m really grateful for the chance to learn in a real environment where quality matters and where I can see the impact of small engineering decisions.
+- Why one approach is preferred over another
+- What patterns the codebase already leans on
+- What risks I missed the first time around
 
-If you’re also early in your career: don’t wait until you “feel ready” - you get ready by doing.
+## What I am taking forward
 
----
+If I had to keep a short list, it would be this:
+
+- **Start small, ship safely, then iterate**
+- **Performance is a product feature**
+- **Ask for less data and shape it better**
+- **Write code for teammates, not just for compilers**
+- **Feedback loops matter more than ego**
+
+If you are early in your career, maybe you have felt this too.
+
+You do not become ready first.
+You get ready by doing the work.
