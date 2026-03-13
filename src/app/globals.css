@@ -409,6 +409,15 @@ a {
   font-weight: 600;
 }
 
+.ui-card-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 1rem;
+  color: var(--muted);
+}
+
 .ui-inline-title {
   font-size: 1rem;
   line-height: 1.26;

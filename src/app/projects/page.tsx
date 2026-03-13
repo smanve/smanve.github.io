@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import CardArrow from "../components/CardArrow";
 import { getAllProjects } from "@/lib/projects";
 
 export const metadata = {
@@ -41,9 +42,7 @@ export default function ProjectsPage() {
               <div className="space-y-4 p-6">
                 <div className="flex items-start justify-between gap-4">
                   <h2 className="ui-card-title">{project.title}</h2>
-                  <span className="ui-meta transition-transform group-hover:translate-x-0.5">
-                    -&gt;
-                  </span>
+                  <CardArrow />
                 </div>
 
                 {project.tags?.length ? (

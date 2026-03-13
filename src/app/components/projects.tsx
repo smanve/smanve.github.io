@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import CardArrow from "./CardArrow";
 import { getAllProjects } from "@/lib/projects";
 
 export default function Projects() {
@@ -51,9 +52,7 @@ export default function Projects() {
               <div className="flex flex-1 flex-col gap-4 p-5">
                 <div className="flex items-start justify-between gap-4">
                   <h3 className="ui-card-title">{project.title}</h3>
-                  <span className="ui-meta transition-transform group-hover:translate-x-0.5">
-                    -&gt;
-                  </span>
+                  <CardArrow />
                 </div>
 
                 {project.summary ? (
