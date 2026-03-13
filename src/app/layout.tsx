@@ -1,12 +1,30 @@
 import "./globals.css";
 import SiteHeader from "./components/SiteHeader";
 
+const themeScript = `
+  (function () {
+    try {
+      var root = document.documentElement;
+      var stored = localStorage.getItem("theme");
+      var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      var theme = stored === "light" || stored === "dark"
+        ? stored
+        : (systemDark ? "dark" : "light");
+
+      root.classList.remove("light", "dark");
+      root.classList.add(theme);
+      root.style.colorScheme = theme;
+    } catch (error) {}
+  })();
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
 
         <title>Manvendra Singh</title>
         <meta

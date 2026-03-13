@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import MailButton from "./MailButton";
+import ThemeToggle from "./ThemeToggle";
 
 const items = [
   { href: "/", label: "Home" },
@@ -49,12 +51,8 @@ export default function SiteHeader() {
             );
           })}
 
-          <a
-            href="mailto:manvendrasingh1999@gmail.com"
-            className="ui-button-secondary hidden sm:inline-flex"
-          >
-            Contact
-          </a>
+          <ThemeToggle />
+          <MailButton className="hidden sm:inline-flex" />
         </div>
       </nav>
     </header>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import MailButton from "./components/MailButton";
 import Projects from "./components/projects";
 import { getAllPosts } from "@/lib/posts";
 
@@ -122,12 +123,23 @@ export default function Page() {
               Have a role, project, or just a question?
             </h2>
             <p className="ui-body">
-              Send me an email. I usually reply there fastest, and it is still
-              the easiest place to have a proper conversation.
+              Email is still the best way to reach me.
+              If LinkedIn is easier for you, that works too.
             </p>
-            <a href="mailto:manvendrasingh1999@gmail.com" className="ui-button">
-              Email me
-            </a>
+            <div className="flex flex-wrap gap-3">
+              <MailButton />
+              <a
+                href="https://www.linkedin.com/in/manvendrasingh1999/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ui-button-secondary"
+              >
+                LinkedIn
+              </a>
+            </div>
+            <p className="ui-meta">
+              Short message is fine. You do not need to overthink it.
+            </p>
           </div>
         </section>
       </section>
