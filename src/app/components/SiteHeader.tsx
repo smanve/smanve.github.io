@@ -32,7 +32,7 @@ export default function SiteHeader() {
               Manvendra
             </span>
             <span className="hidden truncate text-sm text-[color:var(--text)] sm:block">
-              Manvendra Singh / frontend + systems
+              Manvendra Singh / frontend and systems
             </span>
           </span>
         </Link>

@@ -362,7 +362,7 @@ export default function Page() {
 
       <footer className="flex flex-col gap-3 border-t border-[color:var(--border)] pt-6 text-sm text-[color:var(--muted)] sm:flex-row sm:items-center sm:justify-between">
         <div className="font-sfmono text-xs uppercase tracking-[0.18em]">
-          @smanve / frontend + systems
+          @smanve / frontend and systems
         </div>
         <div>Built with Next.js, MDX, and a bias for clarity.</div>
       </footer>

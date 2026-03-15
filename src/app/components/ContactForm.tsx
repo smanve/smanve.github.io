@@ -163,10 +163,6 @@ export default function ContactForm() {
         >
           {status === "submitting" ? "Sending..." : "Send message"}
         </button>
-
-        <a href={`mailto:${siteConfig.email}`} className="ui-button-secondary">
-          Email directly
-        </a>
       </div>
 
       {message ? (
