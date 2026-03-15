@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import { estimateReadingTime } from "./contentMeta";
 
 export type ProjectMeta = {
   slug: string;
@@ -11,6 +12,7 @@ export type ProjectMeta = {
   hero?: string;
   repo?: string;
   demo?: string;
+  readingTime: number;
 };
 
 const PROJ_DIR = path.join(process.cwd(), "content", "projects");
@@ -30,6 +32,7 @@ export function getAllProjects(): ProjectMeta[] {
       hero: data.hero ?? "",
       repo: data.repo ?? "",
       demo: data.demo ?? "",
+      readingTime: estimateReadingTime(raw),
     } as ProjectMeta;
   });
   // newest first if date is set

@@ -1,3 +1,5 @@
+import { siteConfig } from "@/lib/site";
+
 type MailButtonProps = {
   className?: string;
   label?: string;
@@ -9,7 +11,7 @@ export default function MailButton({
 }: MailButtonProps) {
   return (
     <a
-      href="mailto:manvendrasingh1999@gmail.com"
+      href={`mailto:${siteConfig.email}`}
       className={["ui-contact-button", className].join(" ").trim()}
     >
       <svg

@@ -1,12 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import { estimateReadingTime } from "./contentMeta";
 
 export type PostMeta = {
   slug: string;
   title: string;
   date: string;
   summary?: string;
+  readingTime: number;
 };
 
 const POSTS_DIR = path.join(process.cwd(), "content", "posts");
@@ -22,6 +24,7 @@ export function getAllPosts(): PostMeta[] {
       title: data.title ?? slug,
       date: data.date ?? "",
       summary: data.summary ?? "",
+      readingTime: estimateReadingTime(raw),
     };
   });
   // newest first
