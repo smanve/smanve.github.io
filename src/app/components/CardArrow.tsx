@@ -2,7 +2,7 @@ export default function CardArrow() {
   return (
     <span
       aria-hidden="true"
-      className="ui-card-arrow transition-transform group-hover:translate-x-0.5"
+      className="ui-card-arrow transition-all group-hover:-translate-y-0.5 group-hover:translate-x-1 group-hover:border-[color:var(--border-strong)] group-hover:bg-[color:var(--surface-strong)] group-hover:text-[color:var(--text)] group-hover:shadow-[var(--shadow-panel)]"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

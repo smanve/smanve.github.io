@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import ContactForm from "./components/ContactForm";
 import MailButton from "./components/MailButton";
@@ -7,6 +8,10 @@ import { getAllPosts } from "@/lib/posts";
 import { getAllProjects } from "@/lib/projects";
 import { formatDate } from "@/lib/formatDate";
 import { siteConfig } from "@/lib/site";
+
+const CloudCurrent = dynamic(() => import("./components/CloudCurrent"), {
+  ssr: false,
+});
 
 const STACK = [
   "Next.js",
@@ -119,8 +124,9 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-8 lg:gap-10">
-      <section className="ui-panel-strong ui-fade-up relative overflow-hidden px-6 py-8 sm:p-10 lg:p-12">
+      <section className="ui-panel-strong ui-fade-up ui-hero-shell relative overflow-hidden px-6 py-8 sm:p-10 lg:p-12">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--accent-soft),transparent_18%),transparent_45%),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--accent-soft),transparent_28%),transparent_40%)]" />
+        <CloudCurrent />
 
         <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1.18fr)_minmax(20rem,0.92fr)]">
           <div>
