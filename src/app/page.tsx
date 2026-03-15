@@ -174,7 +174,10 @@ export default function Page() {
           </div>
 
           <div className="space-y-4">
-            <section className="ui-terminal">
+            <section
+              className="ui-terminal"
+              data-gravity-attractor="capability-board"
+            >
               <div className="ui-terminal__bar">
                 <div className="ui-terminal__dots" aria-hidden="true">
                   <span className="ui-terminal__dot" />

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { siteConfig } from "@/lib/site";
 
 type FormValues = {
@@ -12,14 +12,14 @@ type FormValues = {
   startedAt: string;
 };
 
-function createInitialValues(): FormValues {
+function createInitialValues(startedAt = ""): FormValues {
   return {
     name: "",
     email: "",
     company: "",
     message: "",
     website: "",
-    startedAt: String(Date.now()),
+    startedAt,
   };
 }
 
@@ -29,6 +29,12 @@ export default function ContactForm() {
     "idle",
   );
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setValues((current) =>
+      current.startedAt ? current : { ...current, startedAt: String(Date.now()) },
+    );
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -57,7 +63,7 @@ export default function ContactForm() {
 
       setStatus("success");
       setMessage("Thanks, your message is on its way. I’ll get back to you soon.");
-      setValues(createInitialValues());
+      setValues(createInitialValues(String(Date.now())));
     } catch {
       setStatus("error");
       setMessage(
