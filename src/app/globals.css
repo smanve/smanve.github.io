@@ -31,6 +31,8 @@ html {
   --accent-button: #102c5f;
   --accent-button-hover: #0d244f;
   --ring: rgba(13, 138, 110, 0.22);
+  --live-indicator: #3fda9f;
+  --live-indicator-glow: rgba(63, 218, 159, 0.12);
   --shadow-soft: 0 1px 2px rgba(17, 22, 32, 0.06),
     0 24px 90px rgba(17, 22, 32, 0.1);
   --shadow-panel: 0 1px 2px rgba(17, 22, 32, 0.05),
@@ -64,6 +66,8 @@ html {
     --accent-button: #1d4f9f;
     --accent-button-hover: #163f7f;
     --ring: rgba(78, 225, 182, 0.26);
+    --live-indicator: #3fda9f;
+    --live-indicator-glow: rgba(63, 218, 159, 0.14);
     --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.36),
       0 28px 90px rgba(0, 0, 0, 0.32);
     --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.32),
@@ -99,6 +103,8 @@ html {
   --accent-button: #1d4f9f;
   --accent-button-hover: #163f7f;
   --ring: rgba(78, 225, 182, 0.26);
+  --live-indicator: #3fda9f;
+  --live-indicator-glow: rgba(63, 218, 159, 0.14);
   --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.36),
     0 28px 90px rgba(0, 0, 0, 0.32);
   --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.32),
@@ -129,6 +135,8 @@ html {
   --accent-button: #102c5f;
   --accent-button-hover: #0d244f;
   --ring: rgba(13, 138, 110, 0.22);
+  --live-indicator: #3fda9f;
+  --live-indicator-glow: rgba(63, 218, 159, 0.12);
   --shadow-soft: 0 1px 2px rgba(17, 22, 32, 0.06),
     0 24px 90px rgba(17, 22, 32, 0.1);
   --shadow-panel: 0 1px 2px rgba(17, 22, 32, 0.05),
@@ -487,8 +495,12 @@ button {
   width: 0.52rem;
   height: 0.52rem;
   border-radius: 999px;
-  background: #3fda9f;
-  box-shadow: 0 0 0 6px rgba(63, 218, 159, 0.12);
+  background: var(--live-indicator);
+  box-shadow: 0 0 0 6px var(--live-indicator-glow);
+}
+
+.ui-live-dot--hero {
+  box-shadow: 0 0 0 5px var(--live-indicator-glow);
 }
 
 .ui-live-dot.is-loading {
@@ -760,6 +772,15 @@ button {
   color: var(--text);
 }
 
+.ui-header-nav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.ui-header-nav::-webkit-scrollbar {
+  display: none;
+}
+
 .ui-toc-link {
   display: block;
   border-radius: 1rem;
@@ -784,6 +805,9 @@ button {
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: 0.73rem;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .ui-form-field {
@@ -972,6 +996,16 @@ button {
     width: 100%;
   }
 
+  .ui-display-title {
+    font-size: clamp(2.2rem, 10.5vw, 3.2rem);
+    line-height: 0.99;
+  }
+
+  .ui-lead {
+    font-size: 0.98rem;
+    line-height: 1.68;
+  }
+
   .ui-theme-toggle {
     min-width: 4.8rem;
   }
@@ -982,7 +1016,45 @@ button {
   }
 
   .ui-link-card {
+    flex-direction: column;
     align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .ui-terminal__bar {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .ui-terminal__title {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    letter-spacing: 0.12em;
+  }
+
+  .ui-console-line {
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .ui-cloud-current {
+    opacity: 0.78;
+    mask-image: linear-gradient(180deg, black 0%, black 58%, transparent 100%);
+  }
+
+  .ui-cloud-current::before {
+    inset: 5% -14% auto auto;
+    width: 18rem;
+    height: 18rem;
+    opacity: 0.68;
+  }
+
+  .ui-cloud-current::after {
+    inset: auto auto 16% 34%;
+    width: 15rem;
+    height: 15rem;
+    opacity: 0.48;
   }
 }
 

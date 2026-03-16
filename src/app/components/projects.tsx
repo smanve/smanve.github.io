@@ -59,7 +59,7 @@ export default function Projects() {
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <h3 className="text-[clamp(1.7rem,2.6vw,2.45rem)] font-semibold leading-[1.04] tracking-[-0.04em] text-[color:var(--text)]">
                     {featured.title}
                   </h3>
@@ -125,7 +125,7 @@ export default function Projects() {
             rest.map((project) => (
               <article key={project.slug} className="ui-panel p-5 sm:p-6">
                 <Link href={`/projects/${project.slug}`} className="group block">
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div>
                       <p className="ui-kicker">Project</p>
                       <h3 className="ui-card-title mt-3">{project.title}</h3>

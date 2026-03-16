@@ -64,7 +64,7 @@ export default function SiteSignal({ className = "" }: SiteSignalProps) {
 
   return (
     <section className={["ui-panel p-5 sm:p-6", className].join(" ").trim()}>
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="ui-kicker">Live site signal</p>
           <h3 className="ui-inline-title mt-3">
@@ -72,7 +72,7 @@ export default function SiteSignal({ className = "" }: SiteSignalProps) {
           </h3>
         </div>
 
-        <span className="ui-live-pill">
+        <span className="ui-live-pill self-start sm:self-auto">
           <span
             className={[
               "ui-live-dot",
@@ -152,12 +152,12 @@ export default function SiteSignal({ className = "" }: SiteSignalProps) {
             </article>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="ui-meta">
               Last content update:{" "}
               {data.updatedAt ? formatDate(data.updatedAt) : "No publish date yet"}
             </p>
-            <code className="ui-code-label">{data.endpoint}</code>
+            <code className="ui-code-label self-start">{data.endpoint}</code>
           </div>
         </div>
       ) : null}

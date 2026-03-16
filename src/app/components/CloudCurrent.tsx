@@ -223,6 +223,8 @@ export default function CloudCurrent() {
     let dpr = 1;
     let dragTarget: FieldBody | null = null;
     let animationEnabled = true;
+    const intersectionMargin = 220;
+    let heroIntersecting = false;
 
     const pointer = {
       active: false,
@@ -412,7 +414,7 @@ export default function CloudCurrent() {
 
       if (!inside) {
         pointer.active = false;
-        return;
+        return false;
       }
 
       const x = clientX - bounds.left;
@@ -438,19 +440,29 @@ export default function CloudCurrent() {
           y,
         });
       }
+
+      return true;
     };
 
     const handlePointerMove = (event: PointerEvent) => {
-      updatePointer(event.clientX, event.clientY, performance.now(), false);
+      const inside = updatePointer(
+        event.clientX,
+        event.clientY,
+        performance.now(),
+        false
+      );
+
+      if (!inside) {
+        releaseDrag();
+      }
     };
 
     const handlePointerDown = (event: PointerEvent) => {
       const interactive = isInteractiveTarget(event.target);
       const now = performance.now();
+      const inside = updatePointer(event.clientX, event.clientY, now, !interactive);
 
-      updatePointer(event.clientX, event.clientY, now, !interactive);
-
-      if (interactive || !canDragMedia.matches) {
+      if (!inside || interactive || !canDragMedia.matches) {
         return;
       }
 
@@ -839,8 +851,17 @@ export default function CloudCurrent() {
       animationFrame = window.requestAnimationFrame(tick);
     };
 
-    const handleDocumentVisibility = () => {
-      animationEnabled = !document.hidden;
+    const isHeroWithinViewport = () => {
+      const rect = hero.getBoundingClientRect();
+
+      return (
+        rect.bottom >= -intersectionMargin &&
+        rect.top <= window.innerHeight + intersectionMargin
+      );
+    };
+
+    const syncAnimationState = () => {
+      animationEnabled = heroIntersecting && !document.hidden;
 
       if (animationEnabled) {
         render(performance.now());
@@ -851,6 +872,10 @@ export default function CloudCurrent() {
       stopLoop();
     };
 
+    const handleDocumentVisibility = () => {
+      syncAnimationState();
+    };
+
     const resizeObserver = new ResizeObserver(() => {
       resize();
     });
@@ -859,19 +884,12 @@ export default function CloudCurrent() {
       null;
     const intersectionObserver = new IntersectionObserver(
       ([entry]) => {
-        animationEnabled = entry.isIntersecting && !document.hidden;
-
-        if (animationEnabled) {
-          render(performance.now());
-          startLoop();
-          return;
-        }
-
-        stopLoop();
+        heroIntersecting = entry.isIntersecting;
+        syncAnimationState();
       },
       {
         root: null,
-        rootMargin: "220px 0px",
+        rootMargin: `${intersectionMargin}px 0px`,
         threshold: 0,
       }
     );
@@ -879,6 +897,7 @@ export default function CloudCurrent() {
     Events.on(engine, "collisionStart", handleCollisionStart);
 
     resize();
+    heroIntersecting = isHeroWithinViewport();
     resizeObserver.observe(hero);
     intersectionObserver.observe(hero);
 
@@ -894,7 +913,7 @@ export default function CloudCurrent() {
     window.addEventListener("blur", handlePointerLeave);
     document.addEventListener("visibilitychange", handleDocumentVisibility);
 
-    startLoop();
+    syncAnimationState();
 
     return () => {
       resizeObserver.disconnect();

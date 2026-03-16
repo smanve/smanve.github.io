@@ -152,7 +152,7 @@ export default function Page() {
               sturdy.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">
               <Link href="/projects" className="ui-button">
                 Explore work
               </Link>
@@ -337,7 +337,7 @@ export default function Page() {
 
           <ContactForm />
 
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mt-5 grid gap-3 sm:flex sm:flex-wrap">
             <MailButton label="Email me" />
             <a
               href={siteConfig.social.linkedin}
